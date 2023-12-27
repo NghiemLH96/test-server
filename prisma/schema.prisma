@@ -1,0 +1,41 @@
+datasource db {
+    url      = env("DATABASE_URL")
+    provider = "mysql"
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Categories {
+    id     Int     @id @default(autoincrement())
+    title  String @unique
+    avatar String  @db.LongText
+    status Boolean @default(false)
+}
+
+enum userRole {
+    admin
+    member
+}
+
+
+model Users{
+    id Int @id @default(autoincrement())
+    userName String @unique
+    password String
+    avatar String  @db.LongText
+    email String @unique
+    role userRole @default(member)
+    status Boolean @default(true)
+    createdAt String
+    updatedAt String
+    ipList ipList[]
+}
+
+model ipList {
+    id Int @id @default(autoincrement())
+    ip String
+    userId Int
+    fk_users Users  @relation(fields:[userId], references:[id])
+}
